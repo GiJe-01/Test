@@ -1,62 +1,66 @@
-body {
-    font-family: 'Arial', sans-serif;
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+body {
+    font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
+    color: #333;
 }
-
+.container {
+    max-width: 1200px;
+    margin: auto;
+    overflow: hidden;
+    padding: 0 20px;
+}
 header {
-    background-color: #333;
+    background: #333;
     color: #fff;
-    padding: 1rem;
-    text-align: center;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin: 0 1rem;
-}
-
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-}
-
-main {
+    padding: 10px 0;
     display: flex;
-    margin: 2rem;
+    justify-content: space-between;
+    align-items: center;
 }
-
-aside {
-    width: 20%;
-    background-color: #e2e2e2;
-    padding: 1rem;
+.user-id {
+    font-size: 1.2em;
 }
-
-.board-list {
-    width: 75%;
-    margin-left: 2rem;
+.main {
+    display: flex;
 }
-
-.board {
-    background-color: #fff;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.group-list {
+    width: 30%;
+    background: #fff;
+    padding: 20px;
+    border-right: 1px solid #ddd;
 }
-
-footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 1rem;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+.group-list ul {
+    list-style: none;
+}
+.group-list ul li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+.group-list ul li:hover {
+    background: #f4f4f4;
+}
+.chat-window {
+    width: 70%;
+    padding: 20px;
+    background: #fff;
+}
+#chat-messages {
+    list-style: none;
+    height: 400px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+}
+#chat-input {
+    width: 80%;
+    padding: 10px;
+    margin-right: 10px;
+}
+#send-message {
+    padding: 10px 20px;
 }
