@@ -3,44 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>匿名掲示板</title>
+    <title>Chat Application</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>匿名掲示板</h1>
-        <nav>
-            <ul>
-                <li><a href="#">ホーム</a></li>
-                <li><a href="#">人気投稿</a></li>
-                <li><a href="#">新規投稿</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <aside>
-            <h2>サイドバー</h2>
-            <ul>
-                <li><a href="#">アクセスランキング</a></li>
-                <li><a href="#">人気の投稿</a></li>
-                <li><a href="#">アクティブユーザー</a></li>
-            </ul>
-        </aside>
-        <section class="board-list">
-            <h2>掲示板一覧</h2>
-            <div class="board">
-                <h3>掲示板タイトル1</h3>
-                <p>最新の投稿内容1...</p>
+    <div class="container">
+        <header>
+            <div class="user-id" id="user-id"></div>
+            <input type="password" id="password" placeholder="パスワードを入力">
+        </header>
+        <div class="main">
+            <div class="group-list">
+                <button id="create-group">+</button>
+                <ul id="group-list">
+                    <li id="all-group">ALL</li>
+                </ul>
             </div>
-            <div class="board">
-                <h3>掲示板タイトル2</h3>
-                <p>最新の投稿内容2...</p>
+            <div class="chat-window">
+                <ul id="chat-messages"></ul>
+                <input type="text" id="chat-input" placeholder="メッセージを入力">
+                <button id="send-message">送信</button>
             </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 匿名掲示板サイト. All rights reserved.</p>
-    </footer>
-    <script src="scripts.js"></script>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
