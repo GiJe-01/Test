@@ -1,58 +1,45 @@
-document.getElementById('login-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var password = document.getElementById('password').value;
-    // パスワード検証ロジック
-    if (password === 'your_password') {
-        document.querySelector('.login-container').style.display = 'none';
-        document.querySelector('.board-container').style.display = 'block';
-    } else {
-        alert('パスワードが間違っています');
-    }
-});
+const ws = new WebSocket('ws://localhost:8080');
 
-let threads = [
-    { id: 1, name: 'トップスレッド' },
-    // 他のスレッドデータ
-];
-let posts = [
-    { id: 1, author: 'ユーザーA', content: 'これは最初の投稿です', date: '2024-12-16', threadId: 1 },
-    // 他の投稿データ
-];
+ws.onopen = () => {
+    console.log('Connected to WebSocket server');
+};
 
-function displayThreads() {
-    const threadContainer = document.getElementById('threads');
-    threadContainer.innerHTML = '';
-    threads.forEach(thread => {
-        const div = document.createElement('div');
-        div.textContent = thread.name;
-        div.onclick = function() {
-            displayPosts(thread.id);
+ws.onmessage = (event) => {
+    const posts = JSON.parse(event.data);
+    displayPosts(posts);
+};
+
+function postMessage(replyTo = null) {
+    const postContent = document.getElementById('new-post').value;
+    if (postContent) {
+        const threadName = document.getElementById('current-thread-title').textContent;
+        const uniqueID = sessionStorage.getItem('uniqueID');
+        const post = {
+            content: postContent,
+            author: uniqueID,
+            date: new Date().toLocaleString(),
+            thread: threadName !== 'トップ' ? threadName : null,
+            replyTo: replyTo
         };
-        threadContainer.appendChild(div);
-    });
-}
-
-function displayPosts(threadId) {
-    const postContainer = document.getElementById('posts');
-    postContainer.innerHTML = '';
-    const threadPosts = posts.filter(post => post.threadId === threadId);
-    threadPosts.forEach(post => {
-        const div = document.createElement('div');
-        div.innerHTML = `<h3>${post.author}</h3><p>${post.content}</p><span>${post.date}</span>`;
-        postContainer.appendChild(div);
-    });
-}
-
-document.getElementById('create-thread').addEventListener('click', function() {
-    const newThreadName = document.getElementById('new-thread').value;
-    if (newThreadName) {
-        const newThread = { id: threads.length + 1, name: newThreadName };
-        threads.push(newThread);
-        displayThreads();
-        document.getElementById('new-thread').value = '';
-    } else {
-        alert('スレッド名を入力してください');
+        ws.send(JSON.stringify(post));
+        document.getElementById('new-post').value = '';
     }
-});
+}
 
-displayThreads();
+function displayPosts(posts) {
+    const threadName = document.getElementById('current-thread-title').textContent;
+    const filteredPosts = posts.filter(post => post.thread === threadName || (threadName === 'トップ' && !post.thread));
+    const postsDiv = document.getElementById('posts');
+    postsDiv.innerHTML = '';
+    filteredPosts.forEach(post => {
+        const postDiv = document.createElement('div');
+        postDiv.className = 'post';
+        postDiv.innerHTML = `
+            <p>${post.content}</p>
+            <small>投稿者: ${post.author}, 投稿日時: ${post.date}</small>
+            <button onclick="replyToPost('${post.author}')">返信</button>
+            <button onclick="deletePost('${post.date}')">削除</button>
+        `;
+        postsDiv.appendChild(postDiv);
+    });
+}
